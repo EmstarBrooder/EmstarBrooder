@@ -14,16 +14,22 @@
         rel="stylesheet">
     <style>
         :root {
-            --primary: #e63946;
-            --primary-dark: #c1121f;
-            --secondary: #003049;
-            --accent: #f77f00;
+            --primary: #c62828;
+            --primary-dark: #8e0000;
+            --primary-light: #ff5f52;
+            --secondary: #1a237e;
+            --secondary-dark: #000051;
+            --secondary-light: #534bae;
+            --accent: #ff8f00;
             --light: #f8f9fa;
             --dark: #212529;
             --gray: #6c757d;
             --light-gray: #e9ecef;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-heavy: 0 15px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --border-radius: 16px;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
         }
 
         * {
@@ -38,7 +44,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
+            line-height: 1.7;
             color: var(--dark);
             background-color: var(--light);
             overflow-x: hidden;
@@ -51,7 +57,7 @@
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
             line-height: 1.2;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         .container {
@@ -62,68 +68,97 @@
         }
 
         .section {
-            padding: 80px 0;
+            padding: 120px 0;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 80px;
         }
 
         .section-title h2 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             color: var(--secondary);
             position: relative;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 800;
         }
 
         .section-title h2::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
+            width: 100px;
+            height: 5px;
+            background: var(--gradient);
+            border-radius: 5px;
         }
 
         .section-title p {
             color: var(--gray);
             max-width: 700px;
             margin: 0 auto;
+            font-size: 1.15rem;
+            line-height: 1.8;
         }
 
         .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 36px;
+            background: var(--gradient);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(198, 40, 40, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            transition: var(--transition);
+            z-index: -1;
         }
 
         .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(230, 57, 70, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(198, 40, 40, 0.4);
+        }
+
+        .btn:hover::before {
+            width: 100%;
         }
 
         .btn-outline {
             background: transparent;
             border: 2px solid var(--primary);
             color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-outline::before {
+            background: var(--primary);
         }
 
         .btn-outline:hover {
-            background: var(--primary);
             color: white;
         }
 
@@ -135,20 +170,27 @@
             width: 100%;
             z-index: 1000;
             background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             transition: var(--transition);
         }
 
         header.scrolled {
-            background: white;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 5px 0;
         }
 
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        header.scrolled .header-container {
+            padding: 10px 0;
         }
 
         .logo {
@@ -157,20 +199,34 @@
         }
 
         .logo-icon {
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: var(--primary);
-            margin-right: 10px;
+            margin-right: 12px;
+            transition: var(--transition);
         }
 
         .logo-text {
             font-family: 'Montserrat', sans-serif;
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             color: var(--secondary);
+            letter-spacing: -0.5px;
         }
 
         .logo-text span {
             color: var(--primary);
+            position: relative;
+        }
+
+        .logo-text span::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
         }
 
         nav ul {
@@ -179,15 +235,16 @@
         }
 
         nav ul li {
-            margin-left: 30px;
+            margin-left: 35px;
         }
 
         nav ul li a {
             color: var(--dark);
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             transition: var(--transition);
             position: relative;
+            font-size: 1.05rem;
         }
 
         nav ul li a:hover {
@@ -197,12 +254,13 @@
         nav ul li a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: -8px;
             left: 0;
             width: 0;
-            height: 2px;
+            height: 3px;
             background: var(--primary);
             transition: var(--transition);
+            border-radius: 2px;
         }
 
         nav ul li a:hover::after {
@@ -213,6 +271,7 @@
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: var(--secondary);
         }
 
         /* Hero Section */
@@ -223,30 +282,72 @@
             align-items: center;
             color: white;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(198, 40, 40, 0.3) 0%, rgba(26, 35, 126, 0.5) 100%);
+            z-index: 1;
         }
 
         .hero-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
+            font-size: 4rem;
+            margin-bottom: 25px;
             animation: fadeInUp 1s ease;
+            font-weight: 800;
+            line-height: 1.1;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
+            font-size: 1.3rem;
+            margin-bottom: 40px;
             animation: fadeInUp 1s ease 0.2s both;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--gradient);
+            border-radius: 50%;
+            opacity: 0.05;
+            z-index: 0;
         }
 
         /* About Section */
@@ -257,14 +358,31 @@
         .about-content {
             display: flex;
             align-items: center;
-            gap: 50px;
+            gap: 60px;
         }
 
         .about-image {
             flex: 1;
-            border-radius: 10px;
+            border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
+            position: relative;
+        }
+
+         .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(198, 40, 40, 0.1) 0%, rgba(26, 35, 126, 0.1) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .about-image:hover::before {
+            opacity: 1;
         }
 
         .about-image img {
@@ -290,6 +408,7 @@
         .about-text p {
             margin-bottom: 20px;
             color: var(--gray);
+            font-size: 1.05rem;
         }
 
         .features {
@@ -301,9 +420,23 @@
 
         .feature {
             text-align: center;
-            padding: 30px 20px;
-            border-radius: 10px;
+            padding: 40px 20px;
+            border-radius: var(--border-radius);
             background: var(--light);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
             transition: var(--transition);
         }
 
@@ -312,145 +445,295 @@
             box-shadow: var(--shadow);
         }
 
+        .feature:hover::before {
+            transform: scaleX(1);
+        }
+
         .feature-icon {
             font-size: 2.5rem;
             color: var(--primary);
             margin-bottom: 20px;
+            transition: var(--transition);
         }
+
+        .feature:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
 
         /* Products Section */
         .products {
-            background: var(--light-gray);
+            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .products::before {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--gradient);
+            border-radius: 50%;
+            opacity: 0.05;
+            z-index: 0;
         }
 
         .product-filters {
             display: flex;
             justify-content: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
         .filter-btn {
-            padding: 8px 20px;
+            padding: 12px 28px;
             background: white;
-            border: 1px solid var(--light-gray);
-            border-radius: 30px;
+            border: 2px solid var(--light-gray);
+            border-radius: 50px;
             cursor: pointer;
             transition: var(--transition);
+            font-weight: 600;
+            box-shadow: var(--shadow);
         }
 
         .filter-btn.active,
         .filter-btn:hover {
-            background: var(--primary);
+            background: var(--gradient);
             color: white;
-            border-color: var(--primary);
+            border-color: transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(198, 40, 40, 0.3);
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
         }
 
         .product-card {
             background: white;
-            border-radius: 10px;
+            border-radius: var(--border-radius);
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(198, 40, 40, 0.05) 0%, rgba(26, 35, 126, 0.05) 100%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1;
         }
 
         .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
         }
 
         .product-image {
-            height: 200px;
+            height: 240px;
             background: var(--light);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            position: relative;
         }
 
         .product-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gradient);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .product-info {
-            padding: 20px;
+            padding: 30px;
+            position: relative;
+            z-index: 2;
         }
 
         .product-info h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
             color: var(--secondary);
         }
 
         .product-info p {
             color: var(--gray);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
         .product-price {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .view-more-container {
+            text-align: center;
+            margin-top: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .view-more-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .view-more-btn:hover {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(198, 40, 40, 0.3);
         }
 
         /* Contact Section */
         .contact {
             background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--gradient);
+            border-radius: 50%;
+            opacity: 0.05;
+            z-index: 0;
         }
 
         .contact-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 50px;
+            position: relative;
+            z-index: 1;
         }
 
         .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
         }
 
         .contact-card {
             display: flex;
             align-items: flex-start;
-            gap: 15px;
-            padding: 20px;
-            background: var(--light);
-            border-radius: 10px;
+            gap: 20px;
+            padding: 30px;
+            background: white;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
+            transform: scaleY(0);
             transition: var(--transition);
         }
 
         .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .contact-card:hover::before {
+            transform: scaleY(1);
         }
 
         .contact-icon {
-            font-size: 1.5rem;
-            color: var(--primary);
-            background: white;
-            width: 50px;
-            height: 50px;
+            font-size: 1.7rem;
+            color: white;
+            background: var(--gradient);
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            box-shadow: 0 8px 15px rgba(198, 40, 40, 0.3);
+            transition: var(--transition);
+        }
+
+        .contact-card:hover .contact-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .contact-details h3 {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
+            font-size: 1.3rem;
+            margin-bottom: 8px;
         }
 
         .contact-details p,
@@ -465,11 +748,17 @@
         }
 
         .map-container {
-            border-radius: 10px;
+            border-radius: var(--border-radius);
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-heavy);
             height: 100%;
-            min-height: 300px;
+            min-height: 400px;
+            transition: var(--transition);
+        }
+
+        .map-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .map-container iframe {
@@ -478,25 +767,72 @@
             border: none;
         }
 
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 8px 20px rgba(198, 40, 40, 0.4);
+        }
+
+        .scroll-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 12px 25px rgba(198, 40, 40, 0.5);
+        }
+
         /* Footer */
         footer {
             background: var(--secondary);
             color: white;
-            padding: 60px 0 20px;
+            padding: 100px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.05;
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+            gap: 50px;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
         }
 
         .footer-column h3::after {
@@ -504,14 +840,16 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 50px;
-            height: 2px;
+            width: 60px;
+            height: 3px;
             background: var(--primary);
+            border-radius: 2px;
         }
 
         .footer-column p {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
         }
 
         .footer-links {
@@ -519,56 +857,62 @@
         }
 
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .footer-links a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .footer-links a:hover {
             color: white;
-            padding-left: 5px;
+            padding-left: 8px;
         }
 
         .social-links {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .social-links a {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             color: white;
             text-decoration: none;
             transition: var(--transition);
+            font-size: 1.2rem;
         }
 
         .social-links a:hover {
             background: var(--primary);
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.1);
         }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
         }
 
         /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
 
             to {
@@ -577,7 +921,40 @@
             }
         }
 
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive */
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
         @media (max-width: 992px) {
             .about-content {
                 flex-direction: column;
@@ -586,23 +963,52 @@
             .features {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .section {
+                padding: 100px 0;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
         }
 
         @media (max-width: 768px) {
             .section {
-                padding: 60px 0;
+                padding: 80px 0;
             }
 
             .section-title h2 {
-                font-size: 2rem;
+                font-size: 2.3rem;
             }
 
             .hero h1 {
                 font-size: 2.5rem;
             }
 
+            .hero p {
+                font-size: 1.1rem;
+            }
+
             nav ul {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 10px 0;
             }
 
             .mobile-menu {
@@ -616,6 +1022,41 @@
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
+            }
+            
+            .product-filters {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .scroll-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -653,8 +1094,8 @@
                 <p>EMSTAR BROODER menghadirkan produk kompor semawar dan gasolek pemanas kandang dengan kualitas
                     terbaik, efisien, dan tahan lama untuk kebutuhan Anda.</p>
                 <div class="hero-buttons">
-                    <a href="#products" class="btn">Lihat Produk</a>
-                    <a href="#contact" class="btn btn-outline">Hubungi Kami</a>
+                    <a href="#products" class="btn">Lihat Produk <i class="fas fa-arrow-right"></i></a>
+                    <a href="#contact" class="btn btn-outline">Hubungi Kami <i class="fas fa-phone"></i></a>
                 </div>
             </div>
         </div>
@@ -725,9 +1166,7 @@
             </div>
 
             <div class="product-grid">
-
                 <!-- Kompor Semawar gas Products -->
-                
                 <div class="product-card" data-category="semawar gas">
                     <div class="product-image">
                         <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Standard" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
@@ -736,7 +1175,7 @@
                         <h3>Kompor Semawar EMSTAR (Gas) Type 201 Komplit</h3>
                         <p>Kompor Semawar Gas.</p>
                         <div class="product-price">Rp 70.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
 
@@ -748,7 +1187,7 @@
                         <h3>Kompor Semawar EMSTAR (Gas) Type 202 Komplit</h3>
                         <p>Kompor semawar Gas.</p>
                         <div class="product-price">Rp 84.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
 
@@ -760,36 +1199,11 @@
                         <h3>Kompor Semawar EMSTAR (Gas) Type 203</h3>
                         <p>Kompor semawar Gas.</p>
                         <div class="product-price">Rp 98.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
-                    </div>
-                </div>
-
-                <div class="product-card" data-category="semawar gas">
-                    <div class="product-image">
-                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
-                    </div>
-                    <div class="product-info">
-                        <h3>Kompor Semawar EMSTAR (Gas) Type 768 Komplit</h3>
-                        <p>Kompor semawar Gas.</p>
-                        <div class="product-price">Rp 112.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
-                    </div>
-                </div>
-
-                <div class="product-card" data-category="semawar gas">
-                    <div class="product-image">
-                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
-                    </div>
-                    <div class="product-info">
-                        <h3>Kompor Semawar EMSTAR (Gas) Type 100 Komplit</h3>
-                        <p>Kompor semawar Gas.</p>
-                        <div class="product-price">Rp 167.750</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
 
                 <!-- Kompor Semawar minyak Products -->
-                
                 <div class="product-card" data-category="semawar minyak">
                     <div class="product-image">
                         <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Standard" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
@@ -798,7 +1212,7 @@
                         <h3>Kompor Semawar EMSTAR (Minyak) Type 201</h3>
                         <p>Kompor semawar Minyak.</p>
                         <div class="product-price">Rp 131.300</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
 
@@ -810,46 +1224,10 @@
                         <h3>Kompor Semawar EMSTAR (Minyak) Type 202</h3>
                         <p>Kompor semawar Minyak.</p>
                         <div class="product-price">Rp 154.750</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
 
-                <div class="product-card" data-category="semawar minyak">
-                    <div class="product-image">
-                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
-                    </div>
-                    <div class="product-info">
-                        <h3>Kompor Semawar EMSTAR (Minyak) Type 203</h3>
-                        <p>Kompor semawar Minyak.</p>
-                        <div class="product-price">Rp 217.500</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
-                    </div>
-                </div>
-                
-                <div class="product-card" data-category="semawar minyak">
-                    <div class="product-image">
-                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
-                    </div>
-                    <div class="product-info">
-                        <h3>Kompor Semawar EMSTAR (Minyak) Type 768</h3>
-                        <p>Kompor semawar Minyak.</p>
-                        <div class="product-price">Rp 278.700</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
-                    </div>
-                </div>
-
-                <div class="product-card" data-category="semawar minyak">
-                    <div class="product-image">
-                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
-                    </div>
-                    <div class="product-info">
-                        <h3>Kompor Semawar EMSTAR (Minyak) Type 100</h3>
-                        <p>Kompor semawar Minyak.</p>
-                        <div class="product-price">Rp 393.250</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
-                    </div>
-                </div>
-                
                 <!-- Gasolek Pemanas Kandang Products -->
                 <div class="product-card" data-category="gasolek">
                     <div class="product-image">
@@ -862,10 +1240,72 @@
                             body dan tebeng dari steanless dof 201. Keramik 15x20cm. Sudah termasuk selang gas dan
                             regulator.</p>
                         <div class="product-price">Rp 880.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
-                <div class="product-card" data-category="gasolek">
+                
+                <!-- Additional products that will be shown when "View More" is clicked -->
+                <div class="product-card hidden-product" data-category="semawar gas">
+                    <div class="product-image">
+                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Kompor Semawar EMSTAR (Gas) Type 768 Komplit</h3>
+                        <p>Kompor semawar Gas.</p>
+                        <div class="product-price">Rp 112.000</div>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+
+                <div class="product-card hidden-product" data-category="semawar gas">
+                    <div class="product-image">
+                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Kompor Semawar EMSTAR (Gas) Type 100 Komplit</h3>
+                        <p>Kompor semawar Gas.</p>
+                        <div class="product-price">Rp 167.750</div>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+
+                <div class="product-card hidden-product" data-category="semawar minyak">
+                    <div class="product-image">
+                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Kompor Semawar EMSTAR (Minyak) Type 203</h3>
+                        <p>Kompor semawar Minyak.</p>
+                        <div class="product-price">Rp 217.500</div>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+                
+                <div class="product-card hidden-product" data-category="semawar minyak">
+                    <div class="product-image">
+                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Kompor Semawar EMSTAR (Minyak) Type 768</h3>
+                        <p>Kompor semawar Minyak.</p>
+                        <div class="product-price">Rp 278.700</div>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+
+                <div class="product-card hidden-product" data-category="semawar minyak">
+                    <div class="product-image">
+                        <img src="KOMPOR_SEMAWAR.jpg" alt="Kompor Semawar EMSTAR Pro" onerror="this.src='https://images.unsplash.com/photo-1581093458791-9d33f472b4a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Kompor Semawar EMSTAR (Minyak) Type 100</h3>
+                        <p>Kompor semawar Minyak.</p>
+                        <div class="product-price">Rp 393.250</div>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
+                    </div>
+                </div>
+                
+                <div class="product-card hidden-product" data-category="gasolek">
                     <div class="product-image">
                         <img src="GASOLEK.jpeg" alt="Gasolek Pemanas Kandang Standard"
                             onerror="this.src='https://images.unsplash.com/photo-1542736667-069246bdbc6d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
@@ -876,14 +1316,11 @@
                             body dan tebeng dari steanless dof 201. Keramik 15x20cm jadikan pembakaran lebih baik dan
                             maksimal.</p>
                         <div class="product-price">Rp 750.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
 
-
-                <!-- Gasolek Pemanas Kandang Products -->
-
-                <div class="product-card" data-category="sparepart">
+                <div class="product-card hidden-product" data-category="sparepart">
                     <div class="product-image">
                         <img src="SPUYER.jpg" alt="Gasolek Pemanas Kandang Premium"
                             onerror="this.src='https://images.unsplash.com/photo-1542736667-069246bdbc6d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
@@ -893,11 +1330,11 @@
                         <p>1 set spuyer gas keran manual T alumunium dan saringan udara kleman, cocok untuk pemanas
                             Emstar, gasolek, igm, dll.</p>
                         <div class="product-price">Rp 145.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
 
-                <div class="product-card" data-category="sparepart">
+                <div class="product-card hidden-product" data-category="sparepart">
                     <div class="product-image">
                         <img src="KERAMIK.jpg" alt="Gasolek Pemanas Kandang Pro"
                             onerror="this.src='https://images.unsplash.com/photo-1542736667-069246bdbc6d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'">
@@ -907,11 +1344,16 @@
                         <p>Keramik pemanas berikut frameline untuk Emstar, gasolek, igm, rikte, mensana, dll. Ukuran 15
                             x 20cm.</p>
                         <div class="product-price">Rp 180.000</div>
-                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang</a>
+                        <a href="https://id.shp.ee/ibCm5AL" class="btn" target="_blank">Beli Sekarang <i class="fas fa-shopping-cart"></i></a>
                     </div>
                 </div>
+            </div>
 
-
+            <div class="view-more-container">
+                <button class="view-more-btn" id="viewMoreBtn">
+                    <span>Lihat Lebih Banyak</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -1002,10 +1444,10 @@
                 <div class="footer-column">
                     <h3>Link Cepat</h3>
                     <ul class="footer-links">
-                        <li><a href="#home">Beranda</a></li>
-                        <li><a href="#about">Tentang Kami</a></li>
-                        <li><a href="#products">Produk</a></li>
-                        <li><a href="#contact">Kontak</a></li>
+                        <li><a href="#home"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="#about"><i class="fas fa-info-circle"></i> Tentang Kami</a></li>
+                        <li><a href="#products"><i class="fas fa-box"></i> Produk</a></li>
+                        <li><a href="#contact"><i class="fas fa-phone"></i> Kontak</a></li>
                     </ul>
                 </div>
 
@@ -1027,21 +1469,73 @@
         </div>
     </footer>
 
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
     <script>
         // Header scroll effect
         window.addEventListener('scroll', function () {
             const header = document.getElementById('header');
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
+                scrollToTopBtn.classList.add('active');
             } else {
                 header.classList.remove('scrolled');
+                scrollToTopBtn.classList.remove('active');
             }
+        });
+
+        // Scroll to top functionality
+        document.getElementById('scrollToTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
 
         // Product filtering
         document.addEventListener('DOMContentLoaded', function () {
             const filterButtons = document.querySelectorAll('.filter-btn');
             const productCards = document.querySelectorAll('.product-card');
+            const viewMoreBtn = document.getElementById('viewMoreBtn');
+            const hiddenProducts = document.querySelectorAll('.hidden-product');
+            let productsVisible = false;
+
+            // Initially hide the additional products
+            hiddenProducts.forEach(product => {
+                product.style.display = 'none';
+            });
+
+            // View More functionality
+            viewMoreBtn.addEventListener('click', function() {
+                if (!productsVisible) {
+                    // Show hidden products
+                    hiddenProducts.forEach(product => {
+                        product.style.display = 'block';
+                        setTimeout(() => {
+                            product.style.opacity = '1';
+                            product.style.transform = 'translateY(0)';
+                        }, 100);
+                    });
+                    viewMoreBtn.innerHTML = '<span>Tampilkan Lebih Sedikit</span><i class="fas fa-chevron-up"></i>';
+                    productsVisible = true;
+                } else {
+                    // Hide additional products
+                    hiddenProducts.forEach(product => {
+                        product.style.opacity = '0';
+                        product.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            product.style.display = 'none';
+                        }, 300);
+                    });
+                    viewMoreBtn.innerHTML = '<span>Lihat Lebih Banyak</span><i class="fas fa-chevron-down"></i>';
+                    productsVisible = false;
+                }
+            });
 
             filterButtons.forEach(button => {
                 button.addEventListener('click', function () {
@@ -1056,11 +1550,40 @@
                     productCards.forEach(card => {
                         if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
                             card.style.display = 'block';
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, 100);
                         } else {
-                            card.style.display = 'none';
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                card.style.display = 'none';
+                            }, 300);
                         }
                     });
+                    
+                    // Reset view more button when filter changes
+                    if (productsVisible) {
+                        hiddenProducts.forEach(product => {
+                            product.style.opacity = '0';
+                            product.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                product.style.display = 'none';
+                            }, 300);
+                        });
+                        viewMoreBtn.innerHTML = '<span>Lihat Lebih Banyak</span><i class="fas fa-chevron-down"></i>';
+                        productsVisible = false;
+                    }
                 });
+            });
+            
+            // Mobile menu toggle
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const nav = document.querySelector('nav ul');
+            
+            mobileMenu.addEventListener('click', function() {
+                nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
             });
         });
     </script>
