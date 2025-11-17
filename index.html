@@ -1497,13 +1497,15 @@
             });
         });
 
-        // Product filtering
+        // Product filtering and view more functionality
         document.addEventListener('DOMContentLoaded', function () {
             const filterButtons = document.querySelectorAll('.filter-btn');
             const productCards = document.querySelectorAll('.product-card');
             const viewMoreBtn = document.getElementById('viewMoreBtn');
+            const viewMoreContainer = document.querySelector('.view-more-container');
             const hiddenProducts = document.querySelectorAll('.hidden-product');
             let productsVisible = false;
+            let currentFilter = 'all';
 
             // Initially hide the additional products
             hiddenProducts.forEach(product => {
@@ -1513,24 +1515,28 @@
             // View More functionality
             viewMoreBtn.addEventListener('click', function() {
                 if (!productsVisible) {
-                    // Show hidden products
+                    // Show hidden products based on current filter
                     hiddenProducts.forEach(product => {
-                        product.style.display = 'block';
-                        setTimeout(() => {
-                            product.style.opacity = '1';
-                            product.style.transform = 'translateY(0)';
-                        }, 100);
+                        if (currentFilter === 'all' || product.getAttribute('data-category') === currentFilter) {
+                            product.style.display = 'block';
+                            setTimeout(() => {
+                                product.style.opacity = '1';
+                                product.style.transform = 'translateY(0)';
+                            }, 100);
+                        }
                     });
                     viewMoreBtn.innerHTML = '<span>Tampilkan Lebih Sedikit</span><i class="fas fa-chevron-up"></i>';
                     productsVisible = true;
                 } else {
-                    // Hide additional products
+                    // Hide additional products based on current filter
                     hiddenProducts.forEach(product => {
-                        product.style.opacity = '0';
-                        product.style.transform = 'translateY(20px)';
-                        setTimeout(() => {
-                            product.style.display = 'none';
-                        }, 300);
+                        if (currentFilter === 'all' || product.getAttribute('data-category') === currentFilter) {
+                            product.style.opacity = '0';
+                            product.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                product.style.display = 'none';
+                            }, 300);
+                        }
                     });
                     viewMoreBtn.innerHTML = '<span>Lihat Lebih Banyak</span><i class="fas fa-chevron-down"></i>';
                     productsVisible = false;
@@ -1545,10 +1551,31 @@
                     // Add active class to clicked button
                     this.classList.add('active');
 
-                    const filterValue = this.getAttribute('data-filter');
+                    // Update current filter
+                    currentFilter = this.getAttribute('data-filter');
 
+                    // Show/hide view more button based on filter
+                    if (currentFilter === 'all') {
+                        viewMoreContainer.style.display = 'block';
+                    } else {
+                        viewMoreContainer.style.display = 'none';
+                        // Reset view more state when switching to category filter
+                        if (productsVisible) {
+                            hiddenProducts.forEach(product => {
+                                product.style.opacity = '0';
+                                product.style.transform = 'translateY(20px)';
+                                setTimeout(() => {
+                                    product.style.display = 'none';
+                                }, 300);
+                            });
+                            viewMoreBtn.innerHTML = '<span>Lihat Lebih Banyak</span><i class="fas fa-chevron-down"></i>';
+                            productsVisible = false;
+                        }
+                    }
+
+                    // Filter products
                     productCards.forEach(card => {
-                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        if (currentFilter === 'all' || card.getAttribute('data-category') === currentFilter) {
                             card.style.display = 'block';
                             setTimeout(() => {
                                 card.style.opacity = '1';
@@ -1562,19 +1589,6 @@
                             }, 300);
                         }
                     });
-                    
-                    // Reset view more button when filter changes
-                    if (productsVisible) {
-                        hiddenProducts.forEach(product => {
-                            product.style.opacity = '0';
-                            product.style.transform = 'translateY(20px)';
-                            setTimeout(() => {
-                                product.style.display = 'none';
-                            }, 300);
-                        });
-                        viewMoreBtn.innerHTML = '<span>Lihat Lebih Banyak</span><i class="fas fa-chevron-down"></i>';
-                        productsVisible = false;
-                    }
                 });
             });
             
